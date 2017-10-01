@@ -4,18 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using System.Web;
-using System.Globalization;
-using System.Net;
-using System.Security.Cryptography;
-using System.IO;
-using System.Text;
-using System.Threading;
+
 
 namespace AsyncAwaitDemoProject
 {
@@ -25,12 +14,12 @@ namespace AsyncAwaitDemoProject
 
         static void Main(string[] args)
         {
-            // TEST 001 uso di task con cancellation token
-            //TEST001();
+            // TEST 001 usage of tasks with cancellation token
+            TEST001();
 
-            // test 002 uso di async await per vedere come si comporta il main thread, 
-            // facciamo partire un timer che stampa a console nel main thread e nel frattempo chiamiamo dei task asincroni
-            TEST002();
+            // test 002 usage of async await with main thread, 
+            // kick off a timer to make console prints in a main thread and in the mean time calls to async tasks
+            //TEST002();
         }
 
 
@@ -96,6 +85,7 @@ namespace AsyncAwaitDemoProject
 
             var cTokenSource = new CancellationTokenSource();
             cTokenSource.CancelAfter(5000);
+
             getIp();
             ipAdr = ipAdr + " finish main thread!";
             var cToken = cTokenSource.Token;// Create a cancellation token from CancellationTokenSource
@@ -126,7 +116,9 @@ namespace AsyncAwaitDemoProject
 
         static string getIp()
         {
-            string externalIP = (new WebClient() { Proxy = null }).DownloadString("http://checkip.dyndns.org/"); return externalIP; //inserire laa classe per il timeout 
+            Thread.Sleep(5500);
+            string externalIP = "12345";//(new WebClient() { Proxy = null }).DownloadString("http://checkip.dyndns.org/"); return externalIP; //inserire laa classe per il timeout 
+            return externalIP;
         }
 
         #endregion 
