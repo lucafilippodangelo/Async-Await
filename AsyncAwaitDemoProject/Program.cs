@@ -14,12 +14,13 @@ namespace AsyncAwaitDemoProject
 
         static void Main(string[] args)
         {
-            // TEST 001 usage of tasks with cancellation token
-            TEST001();
 
-            // test 002 usage of async await with main thread, 
+            //LD TEST 001 usage of tasks with cancellation token
+            //TEST001();
+
+            //LD test 002 usage of async await with main thread, 
             // kick off a timer to make console prints in a main thread and in the mean time calls to async tasks
-            //TEST002();
+            TEST002();
         }
 
 
@@ -27,48 +28,50 @@ namespace AsyncAwaitDemoProject
 
         static void TEST002()
         {
-            Go();
-            generaNumeri();
-
+            //LD this test is just to execute, easy figure out how nested threads are managed
+            EntryPoint();
+            NumberGenerator();
 
             Console.ReadLine();
-
         }
 
-        static async Task Go()
+        static async Task EntryPoint()
         {
-            var task = PrintAnswerToLife();
+            Console.WriteLine("Print from 'EntryPoint'");
+            var task = CallASubTask();
             await task;
-            Console.WriteLine("Scrivo dal metodo Go() ");
+            Console.WriteLine("Scrivo dal metodo EntryPoint() " + " - " + task.Id);
         }
 
-        static async Task PrintAnswerToLife()
+        static async Task CallASubTask()
         {
-            var task = GetAnswerToLife();
+            Console.WriteLine("Print from 'CallASubTask'");
+            var task = Wait3SecAndReturnANumber();
             int answer = await task;
-            Console.WriteLine("Scrivo la risposta: " + answer);
+
+            Console.WriteLine("Print from 'CallASubTask' with answer: " + answer + " - TASK ID: " + task.Id);
         }
 
-        static async Task<int> GetAnswerToLife()
+        static async Task<int> Wait3SecAndReturnANumber()
         {
+            Console.WriteLine("Print from 'Wait3SecAndReturnANumber'");
             var task = Task.Delay(3000);
             await task;
 
             int answer = 11 * 2;
-            Console.WriteLine("Che fantastico ho generato la risposta dopo 3 secondi ");
+            Console.WriteLine("Print from 'Wait3SecAndReturnANumber' after wait 3 sec " + " - TASK ID: " + task.Id);
             return answer;
         }
 
 
-        static int generaNumeri()
+        static void NumberGenerator()
         {
             int i;
-            for (i = 0; i < 5000; i++)
+            for (i = 0; i < 25; i++)
             {
                 Console.WriteLine("Number: {0}", i);
                 Thread.Sleep(300);
             }
-            return i;
         }
 
         #endregion
@@ -82,43 +85,56 @@ namespace AsyncAwaitDemoProject
 
         static void TEST001()
         {
-
             var cTokenSource = new CancellationTokenSource();
-            cTokenSource.CancelAfter(5000);
+            //LD any token created from this cancellation source will expire in 10000ms
+            cTokenSource.CancelAfter(10000);
+            //LD Create a cancellation token from CancellationTokenSource
+            var cToken = cTokenSource.Token;
 
-            getIp();
-            ipAdr = ipAdr + " finish main thread!";
-            var cToken = cTokenSource.Token;// Create a cancellation token from CancellationTokenSource
-            var t1 = Task<int>.Factory.StartNew(() => GenerateNumbers(cToken, " E N T E R "), cToken); // Create a task and pass the cancellation token
-            cToken.Register(() => cancelNotification()); // to register a delegate for a callback when a cancellation request is made
+
+            // Create a task to run "GenerateNumbers" and pass the cancellation token
+            var t1 = Task<int>.Factory.StartNew(() => GenerateNumbers(cToken, " First call to: GenerateNumbers "), cToken);
+
+            // Create a task to run "GenerateNumbersNoToken" 
+            var t2 = Task<int>.Factory.StartNew(() => GenerateNumbersNoToken(" First call to: GenerateNumbers No Token "));
+
+            //LDregister a delegate for a callback when a cancellation request is made
+            cToken.Register(() => cancelNotification()); 
             Console.ReadLine();
-            Thread.Sleep(3100);
+            
         }
 
-        static int GenerateNumbers(CancellationToken ct, string ciao)
+        static int GenerateNumbers(CancellationToken ct, string str)
         {
+            Console.WriteLine(str);
             int i;
             for (i = 0; i < 5000; i++)
             {
-                Console.WriteLine("Method1 - Number: {0}", i); ipAdr = "1.1.1.1 Rafa we got an ip address before than 3 second!";
+                Console.WriteLine("Generate Numbers, FOR id:{0}, then sleep 1500ms", i);
                 Thread.Sleep(1500);
-                if (ct.IsCancellationRequested) // poll the IsCancellationRequested property to check if cancellation was requested 
+
+                //LD poll the IsCancellationRequested property to check if cancellation was requested 
+                if (ct.IsCancellationRequested) 
                 { break; }
             }
             return i;
         }
 
-        // Notify when task is cancelled 
-        static void cancelNotification()
+        static int GenerateNumbersNoToken(string str)
         {
-            Console.WriteLine("DELEGATE Final IP: " + ipAdr);
+            Console.WriteLine(str);
+            int i;
+            for (i = 0; i < 20; i++)
+            {
+                Console.WriteLine("Generate Numbers No Token, FOR id:{0}/20, then sleep 1500ms", i);
+                Thread.Sleep(1500);
+            }
+            return i;
         }
 
-        static string getIp()
+        static void cancelNotification()
         {
-            Thread.Sleep(5500);
-            string externalIP = "12345";//(new WebClient() { Proxy = null }).DownloadString("http://checkip.dyndns.org/"); return externalIP; //inserire laa classe per il timeout 
-            return externalIP;
+            Console.WriteLine("Delegate Subscriber method - t1 stopped notification!");
         }
 
         #endregion 
