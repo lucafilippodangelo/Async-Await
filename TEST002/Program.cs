@@ -43,8 +43,12 @@ namespace TEST002
         static async Task<int> Wait3SecAndReturnANumber()
         {
             Console.WriteLine("- - - > Wait3SecAndReturnANumber");
+
+            //LD way to declare one
             var task = Task.Delay(3000);
             await task;
+
+        
 
             int answer = 11 * 2;
             Console.WriteLine("- - - > Wait3SecAndReturnANumber AFTER 3 SECS " + " - TASK ID: " + task.Id);

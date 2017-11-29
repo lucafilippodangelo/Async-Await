@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TEST001\TEST001.csproj" />
-    <ProjectReference Include="..\TEST002\TEST002.csproj" />
   </ItemGroup>
 
 </Project>
