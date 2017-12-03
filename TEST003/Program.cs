@@ -22,6 +22,10 @@ namespace TEST003
             // the method3 will kickoff after the end of the execution of the Method2(and of course the end of Method1) 
             Method2();
 
+            //LD instead by running another async, the "Method3" will be called straight away after the return,
+            // without wait the end of the "Method1"
+            //Task<int> task2 = Method22();
+
             int count = await task;
                 Method3(count);
             }
@@ -35,7 +39,8 @@ namespace TEST003
                     {
                         Console.WriteLine("- > Method 1 - TASK:" + Task.CurrentId + " "+ System.DateTime.UtcNow.ToString () );
                         count += 1;
-                        Thread.Sleep(25);
+                        Thread.Sleep(15);
+                        
                     }
                 });
                 return count;
@@ -47,12 +52,27 @@ namespace TEST003
                 for (int i = 0; i < 25; i++)
                 {
                     Console.WriteLine("- - > Method 2 - TASK:" + Task.CurrentId + " " + System.DateTime.UtcNow.ToString());
-                    Thread.Sleep(10);
-            }
+                    Thread.Sleep(200);
+                }
             }
 
+        public static async Task<int> Method22()
+        {
+            int count = 0;
+            await Task.Run(() =>
+            {
+                for (int i = 0; i < 100; i++)
+                {
+                    Console.WriteLine("- > Method 22 - TASK:" + Task.CurrentId + " " + System.DateTime.UtcNow.ToString());
+                    count += 1;
+                    Thread.Sleep(25);
 
-            public static void Method3(int count)
+                }
+            });
+            return count;
+        }
+
+        public static void Method3(int count)
             {
                 Console.WriteLine("- - - > Method 3 - TASK:" + Task.CurrentId + " " + System.DateTime.UtcNow.ToString() +" , Total count is " + count);
             }
