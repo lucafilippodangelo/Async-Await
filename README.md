@@ -16,3 +16,5 @@ Overview
 https://docs.microsoft.com/en-us/dotnet/csharp/async
 Good Lecture
 https://msdn.microsoft.com/en-us/magazine/jj991977.aspx
+Details
+https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/async/
