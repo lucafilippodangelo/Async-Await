@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2009
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AsyncAwaitDemoProject", "AsyncAwaitDemoProject.csproj", "{E34922C1-D5EB-4667-8745-6FE19BE30267}"
 EndProject
@@ -10,8 +10,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TEST003", "..\TEST003\TEST003.csproj", "{ACB8E0C8-134E-40C3-AD63-F50192C91CAE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TEST002", "..\TEST002\TEST002.csproj", "{2C10C0AA-E41C-46B3-8725-0A8AC531F42F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TEST004", "..\TEST004\TEST004.csproj", "{A5A5CB56-DF7C-464B-94C8-39FF2CD6D42F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,15 +33,14 @@ Global
 		{2C10C0AA-E41C-46B3-8725-0A8AC531F42F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C10C0AA-E41C-46B3-8725-0A8AC531F42F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C10C0AA-E41C-46B3-8725-0A8AC531F42F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A5A5CB56-DF7C-464B-94C8-39FF2CD6D42F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A5A5CB56-DF7C-464B-94C8-39FF2CD6D42F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A5A5CB56-DF7C-464B-94C8-39FF2CD6D42F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A5A5CB56-DF7C-464B-94C8-39FF2CD6D42F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9C7C53F8-C656-4BA4-815B-0F4F9E2AD379}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal

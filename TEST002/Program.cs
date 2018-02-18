@@ -55,7 +55,6 @@ namespace TEST002
             return answer;
         }
 
-
         static void NumberGenerator()
         {
             int i;

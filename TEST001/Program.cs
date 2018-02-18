@@ -21,6 +21,12 @@ namespace TEST001
             //LD Create a cancellation token from CancellationTokenSource
             var cToken = cTokenSource.Token;
 
+            /*
+             In .NET 4, the primary way for launching a new compute-bound task is the TaskFactory.StartNew method,
+             which accepts a delegate (typically an Action or a Func<TResult>) to be executed asynchronously. 
+             If an Action is provided, a Task is returned to represent the asynchronous execution of that delegate. 
+             If a Func<TResult> is provided, a Task<TResult> is returned.
+             */
 
             // Create a task to run "GenerateNumbers" and pass the cancellation token
             var t1 = Task<int>.Factory.StartNew(() => GenerateNumbers(cToken, " First call to: GenerateNumbers "), cToken);
