@@ -12,9 +12,9 @@ Async and await are the code markers, which marks code positions from where the 
 **TEST 003** "compute-bound task .net 4.5"	 
 further demo on the use of await and prior establishment with synchronous methods
 
-Overview
-https://docs.microsoft.com/en-us/dotnet/csharp/async
-Good Lecture
-https://msdn.microsoft.com/en-us/magazine/jj991977.aspx
-Details
-https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/async/
+- Overview
+  - https://docs.microsoft.com/en-us/dotnet/csharp/async
+- Good Lecture
+  - https://msdn.microsoft.com/en-us/magazine/jj991977.aspx
+- Details
+  - https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/async/
