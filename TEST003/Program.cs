@@ -8,39 +8,29 @@ namespace TEST003
     {
             static void Main(string[] args)
             {
-                callMethod();
+                mainMethod();
                 Console.ReadKey();
             }
 
-            public static async void callMethod()
+            public static async void mainMethod()
             {
-            Task<int> taskReturnCount = AsyncPrintAndSleep15();
+            Task<int> taskReturnCount = ASYNC_one();
 
-            ////LD SAME CODE POSITION ONE if I put the code here, "SinkMethodPrintEvery200" will wait until the return of "taskReturnCount"
-            //int count = await taskReturnCount;
+            SYNC_one("");
 
-            //SincMethodDisplayCount(count);
-
-            SyncPrintAndSleep200("");
-
-            //LD SAME CODE POSITION TWO if I put the code here, "SincMethodDisplayCount(count)" will wait until "SyncPrintAndSleep200" is complete
             int count = await taskReturnCount;
-            SincMethodDisplayCount(count);
+            Display(count);
 
-            //LD will be called after "SincMethodDisplayCount(count)" if "LD SAME CODE POSITION TWO" uncommented
-            // otherwise after the end of the execution of  "SyncPrintAndSleep200("")";
-            Task<int> task2 = AsyncPrintAndSleep25();
+            Task<int> task2 = ASYNC_two();
 
-            //LD will be called after "SincMethodDisplayCount(count)" if "LD SAME CODE POSITION TWO" uncommented
-            // otherwise after the end of the execution of "SyncPrintAndSleep200("")";
-            SyncPrintAndSleep200("ciao-2");
+            SYNC_one("ciao-2");
         }
 
         /// <summary>
         /// ASYNC TASK print an incremental number every 15msec. When 100 prints, return the total of the prints->100
         /// </summary>
         /// <returns></returns>
-        public static async Task<int> AsyncPrintAndSleep15()
+        public static async Task<int> ASYNC_one()
             {
                 int count = 0;
 
@@ -53,7 +43,7 @@ namespace TEST003
                 {
                     for (int i = 0; i < 100; i++)
                     {
-                        Console.WriteLine("- > AsyncPrintAndSleep15 - TASK:" + Task.CurrentId + " "+ System.DateTime.UtcNow.ToString () );
+                        Console.WriteLine("- > ASYNC_one - TASK:" + Task.CurrentId + " "+ System.DateTime.UtcNow.ToString () );
                         count += 1;
                         Thread.Sleep(15);
                         
@@ -63,30 +53,17 @@ namespace TEST003
             }
 
         /// <summary>
-        /// SYNC TASK print an incremental number every 200msec. After 25 prints ends
-        /// </summary>
-        /// <param name="s"></param>
-        public static void SyncPrintAndSleep200(string s)
-            {
-                for (int i = 0; i < 25; i++)
-                {
-                    Console.WriteLine("- - > SinkMethodPrintEvery200: " + s +" - TASK:" + Task.CurrentId + " " + System.DateTime.UtcNow.ToString());
-                    Thread.Sleep(200);
-                }
-            }
-
-        /// <summary>
         /// ASYNC TASK print an incremental number every 25msec. When 100 prints, return the total of the prints->100
         /// </summary>
         /// <returns></returns>
-        public static async Task<int> AsyncPrintAndSleep25()
+        public static async Task<int> ASYNC_two()
         {
             int count = 0;
             await Task.Run(() =>
             {
                 for (int i = 0; i < 100; i++)
                 {
-                    Console.WriteLine("- >AsyncPrintAndSleep25 - TASK:" + Task.CurrentId + " " + System.DateTime.UtcNow.ToString());
+                    Console.WriteLine("- >ASYNC_two - TASK:" + Task.CurrentId + " " + System.DateTime.UtcNow.ToString());
                     count += 1;
                     Thread.Sleep(25);
 
@@ -96,12 +73,25 @@ namespace TEST003
         }
 
         /// <summary>
-        /// Display at consolle the count of sync method
+        /// SYNC TASK print an incremental number every 200msec. After 25 prints ends
+        /// </summary>
+        /// <param name="s"></param>
+        public static void SYNC_one(string s)
+            {
+                for (int i = 0; i < 25; i++)
+                {
+                    Console.WriteLine("- - > SYNC_one: " + s +" - TASK:" + Task.CurrentId + " " + System.DateTime.UtcNow.ToString());
+                    Thread.Sleep(200);
+                }
+            }
+
+        /// <summary>
+        /// Display at console the count of sync method
         /// </summary>
         /// <param name="count"></param>
-        public static void SincMethodDisplayCount(int count)
+        public static void Display(int count)
             {
-                Console.WriteLine("- - - > SincMethodDisplayCount - TASK:" + Task.CurrentId + " " + System.DateTime.UtcNow.ToString() +" , Total count is " + count);
+                Console.WriteLine("- - - > Display - TASK:" + Task.CurrentId + " " + System.DateTime.UtcNow.ToString() +" , Total count is " + count);
             }
         }
     
