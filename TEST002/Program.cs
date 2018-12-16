@@ -26,32 +26,30 @@ namespace TEST002
         static async Task EntryPoint()
         {
             Console.WriteLine("-> EntryPoint START'");
-            var task = CallASubTask();
+            var task = NestedOne();
             await task;
-            Console.WriteLine("-> EntryPoint END " + " - " + task.Id);
+            Console.WriteLine("-> EntryPoint END after NestedOne finished " + " - " + task.Id);
         }
 
-        static async Task CallASubTask()
+        static async Task NestedOne()
         {
-            Console.WriteLine("- - > CallASubTask START");
-            var task = Wait3SecAndReturnANumber();
+            Console.WriteLine("- - > NestedOne START");
+            var task = NestedTwo();
             int answer = await task;
 
-            Console.WriteLine("- - > CallASubTask END - answer: " + answer + " - TASK ID: " + task.Id);
+            Console.WriteLine("- - > NestedOne END - GOT NestedTwo value: " + answer + " - TASK ID: " + task.Id);
         }
 
-        static async Task<int> Wait3SecAndReturnANumber()
+        static async Task<int> NestedTwo()
         {
-            Console.WriteLine("- - - > Wait3SecAndReturnANumber");
+            Console.WriteLine("- - - > NestedTwo START");
 
             //LD way to declare one
             var task = Task.Delay(3000);
             await task;
 
-        
-
             int answer = 11 * 2;
-            Console.WriteLine("- - - > Wait3SecAndReturnANumber AFTER 3 SECS " + " - TASK ID: " + task.Id);
+            Console.WriteLine("- - - > NestedTwo END (after 3 sec) " + " - TASK ID: " + task.Id);
             return answer;
         }
 
